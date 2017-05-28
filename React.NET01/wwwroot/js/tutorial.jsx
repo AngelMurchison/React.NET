@@ -63,6 +63,21 @@ var CommentBox = React.createClass({
     getInitialState: function () {
         return { data: [] };
     },
+    // Make sense of this. (https://reactjs.net/getting-started/tutorial.html#updating-state)
+    loadCommentsFromServer: function () {
+        var xhr = new XMLHttpRequest();
+        xhr.open('get', this.props.url, true);
+        xhr.onload = function () {
+            var data = JSON.parse(xhr.responseText);
+            this.setState({ data: data });
+        }.bind(this);
+        xhr.send();
+    },
+    // And this. Why use componentDid vs componentWill?
+    componentDidMount: function () {
+        this.loadCommentsFromServer();
+        window.setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+    },
     render: function () {
         return (
             <div className="commentBox">
@@ -77,6 +92,6 @@ var CommentBox = React.createClass({
 // in a real app, we should generate the URL server-side via Url.Action. Either that or
 // use RouteJs
 ReactDOM.render(
-    <CommentBox url="/comments" />,
+    <CommentBox url="/comments" pollInterval={2000} />,
     document.getElementById('content')
 );
