@@ -4,11 +4,8 @@
     { id: 3, author: "Jordan Walke", text: "This is *another* comment" }
 ];
 
-// Learn to use this json data blob.
-
-
 // Our React Components.
-// In ascending hierarchical order.
+// In hierarchical order, starting with the smallest component.
 var Comment = React.createClass({
     // Remarkable is a package. It allows you to add HTML Markup inline with your react components.
     rawMarkup: function () {
@@ -30,14 +27,23 @@ var Comment = React.createClass({
     }
 });
 
-// Our CommentList is being fed an "author" property.
+// Our CommentList is being generated dynamically from the data we've supplied.
+// Each comment MUST have a key prop to make commentNodes possible to iterate? I guess.
+// Why is commentNodes inside render unlike some of the other things we've declared?
+// Also, it is a var. Are everything else we've declared properties of the var we made with 
+// React. createClass()?
 var CommentList = React.createClass({
     render: function () {
+        var commentNodes = this.props.data.map(function (comment) {
+            return (
+                <Comment author={comment.author} key={comment.id}>
+                    {comment.text}
+                </Comment>
+            );
+        });
         return (
             <div className="commentList">
-                <Comment author="Daniel Lo Nigro"> Hello ReactJS.NET World!</Comment>
-                <Comment author="Pete Hunt">This is one comment</Comment>
-                <Comment author="Jordan Walke">This is *another* comment</Comment>
+                {commentNodes}
             </div>
         );
     }
@@ -54,18 +60,23 @@ var CommentForm = React.createClass({
 })
 
 var CommentBox = React.createClass({
+    getInitialState: function () {
+        return { data: [] };
+    },
     render: function () {
         return (
             <div className="commentBox">
                 <h1>Comments</h1>
-                <CommentList data={this.props.data} />
+                <CommentList data={this.state.data} />
                 <CommentForm />
             </div>
         );
     }
 });
 
+// in a real app, we should generate the URL server-side via Url.Action. Either that or
+// use RouteJs
 ReactDOM.render(
-    <CommentBox data={data} />,
+    <CommentBox url="/comments" />,
     document.getElementById('content')
 );
