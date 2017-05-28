@@ -4,15 +4,20 @@
     { id: 3, author: "Jordan Walke", text: "This is *another* comment" }
 ];
 
-// Add notation for this code and then learn to use this json data blob.
+// Learn to use this json data blob.
 
+
+// Our React Components.
+// In ascending hierarchical order.
 var Comment = React.createClass({
+    // Remarkable is a package. It allows you to add HTML Markup inline with your react components.
     rawMarkup: function () {
         var md = new Remarkable();
         var rawMarkup = md.render(this.props.children.toString());
         return { __html: rawMarkup };
     },
-
+    // dangerouslySetInnerHTML is used with remarkable to properly compile the HTML it adds/modifies.
+    // Our comment is using its author property as a display name in h2.
     render: function () {
         return (
             <div className="comment">
@@ -25,18 +30,7 @@ var Comment = React.createClass({
     }
 });
 
-var CommentBox = React.createClass({
-    render: function () {
-        return (
-            <div className="commentBox">
-                <h1>Comments</h1>
-                <CommentList />
-                <CommentForm />
-            </div>
-        );
-    }
-});
-
+// Our CommentList is being fed an "author" property.
 var CommentList = React.createClass({
     render: function () {
         return (
@@ -59,7 +53,19 @@ var CommentForm = React.createClass({
     }
 })
 
+var CommentBox = React.createClass({
+    render: function () {
+        return (
+            <div className="commentBox">
+                <h1>Comments</h1>
+                <CommentList data={this.props.data} />
+                <CommentForm />
+            </div>
+        );
+    }
+});
+
 ReactDOM.render(
-    <CommentBox />,
+    <CommentBox data={data} />,
     document.getElementById('content')
 );
