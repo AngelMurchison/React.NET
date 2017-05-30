@@ -15,7 +15,7 @@ var Comment = React.createClass({
         return { __html: rawMarkup };
     },
     // dangerouslySetInnerHTML is used with remarkable to properly compile the HTML it adds/modifies.
-    // Our comment is using its author property as a display name in h2.
+    // our comment is using its author property as a heading2.
     render: function () {
         return (
             <div className="comment">
@@ -124,7 +124,9 @@ var CommentBox = React.createClass({
         this.loadCommentsFromServer();
         window.setInterval(this.loadCommentsFromServer, this.props.pollInterval);
     },
+    // Why does the console log 'rendering' twice? Jw.
     render: function () {
+        console.log('rendering')
         return (
             <div className="commentBox">
                 <h1>Comments</h1>
@@ -138,6 +140,6 @@ var CommentBox = React.createClass({
 // in a real app, we should generate the URL server-side via Url.Action. Either that or
 // use RouteJs
 ReactDOM.render(
-    <CommentBox url="/comments" submitUrl="/comments/new" pollInterval={2000} />,
+    <CommentBox url="/comments" submitUrl="/comments/new" pollInterval={20000} />,
     document.getElementById('content')
 );
