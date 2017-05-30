@@ -6,6 +6,7 @@
 
 // Our React Components.
 // In hierarchical order, starting with the smallest component.
+
 var Comment = React.createClass({
     // Remarkable is a package. It allows you to add HTML Markup inline with your react components.
     rawMarkup: function () {
@@ -93,7 +94,7 @@ var CommentForm = React.createClass({
         );
     }
 });
-// Is there any purpose to starting a components property with "handle"?
+// Is there any purpose to starting a component's property with "handle"?
 var CommentBox = React.createClass({
     loadCommentsFromServer: function () {
         var xhr = new XMLHttpRequest();
@@ -101,7 +102,6 @@ var CommentBox = React.createClass({
         xhr.onload = function () {
             var data = JSON.parse(xhr.responseText);
             this.setState({ data: data });
-            console.log(data)
         }.bind(this);
         xhr.send();
     },
@@ -115,7 +115,6 @@ var CommentBox = React.createClass({
         xhr.onload = function () {
             this.loadCommentsFromServer();
         }.bind(this);
-        console.log(data)
         xhr.send(data);
     },
     getInitialState: function () {
@@ -136,14 +135,9 @@ var CommentBox = React.createClass({
     }
 });
 
-ReactDOM.render(
-    <CommentBox url="/comments" submitUrl="/comments/new" pollInterval={2000} />,
-    document.getElementById('content')
-);
-
 // in a real app, we should generate the URL server-side via Url.Action. Either that or
 // use RouteJs
 ReactDOM.render(
-    <CommentBox url="/comments" pollInterval={2000} />,
+    <CommentBox url="/comments" submitUrl="/comments/new" pollInterval={2000} />,
     document.getElementById('content')
 );
