@@ -8,14 +8,13 @@
 // In hierarchical order, starting with the smallest component.
 
 var Comment = React.createClass({
-    // Remarkable is a package. It allows you to add HTML Markup inline with your react components.
+    // Remarkable is a package that allows you to add HTML markup inline with your react components.
     rawMarkup: function () {
         var md = new Remarkable();
         var rawMarkup = md.render(this.props.children.toString());
         return { __html: rawMarkup };
     },
     // dangerouslySetInnerHTML is used with remarkable to properly compile the HTML it adds/modifies.
-    // our comment is using its author property as a heading2.
     render: function () {
         return (
             <div className="comment">
@@ -29,10 +28,8 @@ var Comment = React.createClass({
 });
 
 // Our CommentList is being generated dynamically from the data we've supplied.
-// Each comment MUST have a key prop to make commentNodes possible to iterate? I guess.
+// Each comment MUST have a key prop, but why?
 // Why is commentNodes inside render unlike some of the other things we've declared?
-// Also, it is a var. Are everything else we've declared properties of the var we made with 
-// React. createClass()?
 var CommentList = React.createClass({
     render: function () {
         var commentNodes = this.props.data.map(function (comment) {
@@ -49,7 +46,7 @@ var CommentList = React.createClass({
         );
     }
 });
-
+// Is there any purpose to starting a component's property with "handle"?
 var CommentForm = React.createClass({
     getInitialState: function () {
         return { author: '', text: '' };
@@ -94,7 +91,7 @@ var CommentForm = React.createClass({
         );
     }
 });
-// Is there any purpose to starting a component's property with "handle"?
+
 var CommentBox = React.createClass({
     loadCommentsFromServer: function () {
         var xhr = new XMLHttpRequest();
